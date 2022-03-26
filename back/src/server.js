@@ -1,7 +1,19 @@
-import app from './app.js';
+import app from "./app.js";
+import {createServer} from "http";
+import { Server } from "socket.io";
+
+const server = createServer(app);
+const io = new Server(server);
+
+io.on('connection', (socket) => {
+    console.log(socket.id)
+    socket.on('SEND_MESSAGE', function(data) {
+        io.emit('MESSAGE', data)
+    });
+})
 
 const PORT = 3000;
 
-app.listen(PORT, () => {
-    console.log(`App listening on port http://localhost:${PORT}`);
-})
+server.listen(PORT, () => {
+	console.log(`App listening on port http://localhost:${PORT}`);
+});

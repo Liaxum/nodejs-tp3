@@ -1,8 +1,5 @@
 <template>
   <div class="container">
-    <div v-if="User">
-      <p>Hi {{ User }}</p>
-    </div>
     <div>
       <form @submit.prevent="submit">
         <div>
@@ -11,8 +8,8 @@
         </div>
         <div>
           <textarea
-            name="write_up"
-            v-model="form.write_up"
+            name="text"
+            v-model="form.text"
             placeholder="Write up..."
           ></textarea>
         </div>
@@ -23,9 +20,8 @@
       <ul>
         <li v-for="post in Posts" :key="post.id">
           <div id="post-div">
-            <p>{{ post.title }}</p>
-            <p>{{ post.write_up }}</p>
-            <p>Written By: {{ post.author.username }}</p>
+            <p><b>{{ post.title }}</b></p>
+            <p>{{ post.text }}</p>
           </div>
         </li>
       </ul>
@@ -44,22 +40,22 @@ export default {
     return {
       form: {
         title: "",
-        write_up: "",
+        text: "",
       },
     };
   },
-  created: function() {
+  created() {
     // a function to call getposts action
-    this.GetPosts()
+    this.GetPosts(this.Token)
   },
   computed: {
-    ...mapGetters({ Posts: "StatePosts", User: "StateUser" }),
+    ...mapGetters({ Posts: "StatePosts", Token: "StateToken" }),
   },
   methods: {
     ...mapActions(["CreatePost", "GetPosts"]),
     async submit() {
       try {
-        await this.CreatePost(this.form);
+        await this.CreatePost({post: this.form, token: this.Token});
       } catch (error) {
         throw "Sorry you can't make a post now!"
       }

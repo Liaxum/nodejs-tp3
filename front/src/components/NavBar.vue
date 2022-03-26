@@ -3,7 +3,9 @@
     <router-link to="/">Home</router-link> |
     <router-link to="/posts">Posts</router-link> |
     <span v-if="isLoggedIn">
+      <router-link to="/chat">Chat</router-link> |
       <a @click="logout">Logout</a>
+      
     </span>
     <span v-else>
       <router-link to="/register">Register</router-link> |

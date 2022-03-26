@@ -6,7 +6,9 @@ const BEARER_AUTH = "Bearer ";
 export function hasValidToken(req, res, next) {
 	const authHeader = req.get("Authorization");
 	if (!authHeader || !authHeader.startsWith(BEARER_AUTH)) {
-		return res.status(401).json({message: "Auth token header missing"});
+		return res
+			.status(401)
+			.json({ message: "Auth token header missing" });
 	}
 
 	try {
@@ -18,10 +20,10 @@ export function hasValidToken(req, res, next) {
 		req.jwt = { token, payload };
 		next();
 	} catch (error) {
-		return res.status(403).json({message: "Invalid token"});
+		return res.status(403).json({ message: "Invalid token" });
 	}
-};
+}
 
-export function signin(email) {
-	return jwt.sign({email}, JWT_SECRET, {expiresIn: '15m'});
+export function signin(identifier) {
+	return jwt.sign({ identifier }, JWT_SECRET, { expiresIn: "15m" });
 }
