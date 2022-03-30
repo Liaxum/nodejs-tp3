@@ -3,7 +3,9 @@ import {createServer} from "http";
 import { Server } from "socket.io";
 
 const server = createServer(app);
-const io = new Server(server);
+const io = new Server(server, {
+    cors: { credentials: true, origin: true }
+});
 
 io.on('connection', (socket) => {
     console.log(socket.id)
